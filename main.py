@@ -94,13 +94,13 @@ def plot(dist,far,angle):
 if __name__ == '__main__':
 
     # saving Calibration images
-    # SaveImages.save_images(1)
+    SaveImages.save_images(1)
 
     # Calibrate Camera
-    # CalibrateCamera()
+    CalibrateCamera()
 
     # saving Aruco images
-    # SaveImages.save_images(2)
+    SaveImages.save_images(2)
 
     # Detecting Aruco and calculating distance and angle
 
