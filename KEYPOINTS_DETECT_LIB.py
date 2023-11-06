@@ -129,8 +129,6 @@ class ArUco():
     
         if draw:
             cv2.aruco.drawDetectedMarkers(img, bboxes)
-            cv2.imshow("Image", img)
-            cv2.waitKey(1)
         return bboxes_npArray, ids
     
     def get_matched_corner_points_pairs(self, left_img, right_img):

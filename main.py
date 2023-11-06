@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import glob
 import cv2
+from CAMERA_CAPTURE_MODULE_MAIN import ComeraCapture_RealSense
 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -55,29 +56,36 @@ def Detection(ids):
     StereoObj = SterioParameter("cal.pkl")
     obj = ArUco()
     obj.set_tool_vector(ids)
-    img_path = config['PATHS']['ArucoImagePath']
-    img_format = config['IMAGE_FORMAT']['ArucoImageFormat']
 
-    # reading images from folder
-    left_images =  glob.glob(img_path + 'LEFT/*' + img_format)
-    right_images = glob.glob(img_path + 'RIGHT/*' + img_format)
-    left_images.sort()
-    right_images.sort()
+    # img_path = config['PATHS']['ArucoImagePath']
+    # img_format = config['IMAGE_FORMAT']['ArucoImageFormat']
+
+    # # reading images from folder
+    # left_images =  glob.glob(img_path + 'LEFT/*' + img_format)
+    # right_images = glob.glob(img_path + 'RIGHT/*' + img_format)
+    # left_images.sort()
+    # right_images.sort()
 
     dist =[]
     angle = []
     far = []
 
-    for i in range(len(left_images)):
-        print(i)
-        left = cv2.imread(left_images[i])
-        right = cv2.imread(right_images[i])
+    obj2 = ComeraCapture_RealSense(CAMERA_CONFIG_OBJ=None)
+    while True:  
+        ret, left, right = obj2.get_IR_FRAME_SET()
         corner_tool_ret , corner_point = obj.get_corner_world_points(StereoObj , left , right)
         center_tool_ret , center_points = obj.get_center_world_points(StereoObj , left , right)
         if(corner_tool_ret == [True]*len(ids) and center_tool_ret == [True]*len(ids)):
-            far.append(np.linalg.norm((center_points[0][0] + center_points[1][0])/2))
-            dist.append(calculate_distance(point1=center_points[0][0] , point2 = center_points[1][0]))
-            angle.append( angle_between_two_aruco(corner_point[0] , corner_point[1]))
+            f = np.linalg.norm((center_points[0][0] + center_points[1][0])/2)
+            d = calculate_distance(point1=center_points[0][0] , point2 = center_points[1][0])
+            a = angle_between_two_aruco(corner_point[0] , corner_point[1])
+            far.append(f)
+            dist.append(d)
+            angle.append(a)
+            print("far : " , f)
+            print("Distance : " , d) 
+            print("angle : " , a)
+           
     return dist , far , angle
 
 def plot(dist,far,angle):
