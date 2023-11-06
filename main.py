@@ -51,8 +51,7 @@ def CalibrateCamera():
     except:
         print("Unable to save")
 
-def Detection():
-    ids = [5,8] # change according to your aruco id
+def Detection(ids):
     StereoObj = SterioParameter("cal.pkl")
     obj = ArUco()
     obj.set_tool_vector(ids)
@@ -98,14 +97,15 @@ if __name__ == '__main__':
     # SaveImages.save_images(1)
 
     # Calibrate Camera
-    CalibrateCamera()
+    # CalibrateCamera()
 
     # saving Aruco images
     # SaveImages.save_images(2)
 
     # Detecting Aruco and calculating distance and angle
 
-    dist,far,angle =  Detection()
+    ids = [5,8] #Change accordingly 
+    dist,far,angle =  Detection(ids)
 
     # plotting distance and angle
 

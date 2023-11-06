@@ -20,7 +20,7 @@ class SaveImages:
         else:
             print("Invalid choice")
         i = 0
-        while i < 100:
+        while True:
             ret, L_img, R_img = obj.get_IR_FRAME_SET()
             if ret:
                 cv2.imshow('L_img', L_img)
